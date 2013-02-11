@@ -16,7 +16,7 @@ class GithubPush
     messages += commit_messages.first(8)
 
     if commit_messages.count > 8
-      messages += '...'
+      messages << '...'
     end
 
     if messages.first =~ /pushed 1 new commit/
