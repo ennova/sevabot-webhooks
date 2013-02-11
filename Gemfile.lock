@@ -5,6 +5,7 @@ GEM
     httparty (0.10.2)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
+    json (1.7.6)
     multi_json (1.5.0)
     multi_xml (0.5.3)
     rack (1.5.2)
@@ -22,4 +23,5 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   httparty
+  json
   sinatra

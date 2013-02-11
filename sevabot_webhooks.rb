@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'httparty'
 require 'awesome_print'
+require 'json'
 require './lib/github_push'
 
 SEVABOT_HOST = ENV['SEVABOT_HOST']
@@ -17,7 +18,8 @@ post '/:webhook/:chat_id/:shared_secret' do
   case params[:webhook]
   when 'github-post-commit'
     begin
-      github_push = GithubPush.new(params[:payload])
+      payload = JSON.parse(params[:payload])
+      github_push = GithubPush.new(payload)
       message = github_push.messages.join("\n")
       HTTParty.post sevabot_url, :body => {:msg => message}
     rescue Exception => e
