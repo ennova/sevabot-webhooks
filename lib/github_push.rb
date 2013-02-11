@@ -15,6 +15,10 @@ class GithubPush
     messages << "#{summary_message}: #{summary_url}"
     messages += commit_messages.first(8)
 
+    if commit_messages.count > 8
+      messages += '...'
+    end
+
     if messages.first =~ /pushed 1 new commit/
       messages.shift # drop summary message
       messages.first << " ( #{distinct_commits.first['url']} )"
