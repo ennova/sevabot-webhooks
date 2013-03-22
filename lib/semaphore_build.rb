@@ -5,8 +5,8 @@ class SemaphoreBuild
 
   attr_reader :payload
 
-  def initialize(payload)
-    @payload = payload
+  def initialize(params)
+    @payload = params
   end
 
   def messages

@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'httparty'
 require 'awesome_print'
-require 'json'
 require './lib/github_push'
 require './lib/semaphore_build'
 
@@ -18,8 +17,7 @@ end
 post '/:webhook/:chat_id/:shared_secret' do
   if webhook_adapter
     begin
-      payload = JSON.parse(params[:payload])
-      webhook = webhook_adapter.new(payload)
+      webhook = webhook_adapter.new(params)
       message = webhook.messages.join("\n")
       unless message.empty?
         HTTParty.post sevabot_url, :body => {:msg => message}
@@ -28,7 +26,7 @@ post '/:webhook/:chat_id/:shared_secret' do
       error_message = "Error: #{request.host}: #{params[:webhook]}\n"
       error_message += e.message + "\n"
       error_message += e.backtrace.first(5).join("\n")
-      error_message += "\n\n#{params[:payload]}"
+      error_message += "\n\n#{params}"
       HTTParty.post sevabot_url, :body => {:msg => error_message}
     end
   else

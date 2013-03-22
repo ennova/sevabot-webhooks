@@ -1,3 +1,5 @@
+require 'json'
+
 module SemaphoreBuildHelper
   def self.included(base)
     base.class_eval do

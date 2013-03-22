@@ -1,12 +1,13 @@
 require './lib/github_push_helper'
+require 'json'
 
 class GithubPush
   include GithubPushHelper
 
   attr_reader :payload
 
-  def initialize(payload)
-    @payload = payload
+  def initialize(params)
+    @payload = JSON.parse(params['payload'])
   end
 
   # https://github.com/github/github-services/blob/master/lib/services/campfire.rb (receive_push method)
