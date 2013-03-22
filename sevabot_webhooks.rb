@@ -21,7 +21,9 @@ post '/:webhook/:chat_id/:shared_secret' do
       payload = JSON.parse(params[:payload])
       webhook = webhook_adapter.new(payload)
       message = webhook.messages.join("\n")
-      HTTParty.post sevabot_url, :body => {:msg => message}
+      unless message.empty?
+        HTTParty.post sevabot_url, :body => {:msg => message}
+      end
     rescue Exception => e
       error_message = "Error: #{request.host}: #{params[:webhook]}\n"
       error_message += e.message + "\n"
