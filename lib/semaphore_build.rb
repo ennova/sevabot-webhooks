@@ -6,7 +6,7 @@ class SemaphoreBuild
   attr_reader :payload
 
   def initialize(params)
-    @payload = params
+    @payload = JSON.parse(params.keys.first)
   end
 
   def messages

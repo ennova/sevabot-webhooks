@@ -1,5 +1,3 @@
-require 'json'
-
 module SemaphoreBuildHelper
   def self.included(base)
     base.class_eval do
@@ -59,7 +57,7 @@ module SemaphoreBuildHelper
 
   module ClassMethods
     def sample_payload
-      JSON.parse(<<-JSON)
+      key = <<-JSON
       {
         "branch_history_url": "http://semaphoreapp.com/api/v1/projects/649e584dc507ca4b73e1374d3125ef0b567a949c/89?auth_token=Yds3w6o26FLfJTnVK2y9",
         "branch_name": "gem_updates",
@@ -81,6 +79,7 @@ module SemaphoreBuildHelper
         "started_at": "2012-07-09T15:23:53Z"
       }
       JSON
+      {key => nil}
     end
   end
 end
