@@ -3,6 +3,7 @@ require 'httparty'
 require 'awesome_print'
 require 'json'
 require './lib/github_push'
+require './lib/semaphore_build'
 
 SEVABOT_HOST = ENV['SEVABOT_HOST']
 unless SEVABOT_HOST
@@ -54,6 +55,8 @@ helpers do
     @webhook_adapter ||= case params[:webhook]
     when 'github-post-commit'
       GithubPush
+    when 'semaphore-build'
+      SemaphoreBuild
     end
   end
 end
