@@ -15,12 +15,11 @@ unless SEVABOT_PORT
 end
 
 post '/:webhook/:chat_id/:shared_secret' do
-  case params[:webhook]
-  when 'github-post-commit'
+  if webhook_adapter
     begin
       payload = JSON.parse(params[:payload])
-      github_push = GithubPush.new(payload)
-      message = github_push.messages.join("\n")
+      webhook = webhook_adapter.new(payload)
+      message = webhook.messages.join("\n")
       HTTParty.post sevabot_url, :body => {:msg => message}
     rescue Exception => e
       error_message = "Error: #{request.host}: #{params[:webhook]}\n"
@@ -36,11 +35,10 @@ post '/:webhook/:chat_id/:shared_secret' do
 end
 
 get '/test/:webhook/:chat_id/:shared_secret' do
-  case params[:webhook]
-  when 'github-post-commit'
-    sample_payload = GithubPushHelper.sample_payload
-    github_push = GithubPush.new(sample_payload)
-    HTTParty.post sevabot_url, :body => {:msg => github_push.messages.join("\n")}
+  if webhook_adapter
+    sample_payload = webhook_adapter.sample_payload
+    webhook = webhook_adapter.new(sample_payload)
+    HTTParty.post sevabot_url, :body => {:msg => webhook.messages.join("\n")}
   else
     halt "Invalid webhook: #{params[:webhook]}"
   end
@@ -50,5 +48,12 @@ end
 helpers do
   def sevabot_url
     "http://#{SEVABOT_HOST}:#{SEVABOT_PORT}/message/#{params[:chat_id]}/#{params[:shared_secret]}/"
+  end
+
+  def webhook_adapter
+    @webhook_adapter ||= case params[:webhook]
+    when 'github-post-commit'
+      GithubPush
+    end
   end
 end
