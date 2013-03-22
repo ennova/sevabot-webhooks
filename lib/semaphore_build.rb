@@ -10,6 +10,10 @@ class SemaphoreBuild
   end
 
   def messages
-    [summary_message]
+    messages = []
+    unless result == 'pending'
+      messages << summary_message
+    end
+    messages
   end
 end
