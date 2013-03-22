@@ -23,7 +23,7 @@ post '/:webhook/:chat_id/:shared_secret' do
       message = github_push.messages.join("\n")
       HTTParty.post sevabot_url, :body => {:msg => message}
     rescue Exception => e
-      error_message = "Error: #{request.host}: #{params[:webhookt]}\n"
+      error_message = "Error: #{request.host}: #{params[:webhook]}\n"
       error_message += e.message + "\n"
       error_message += e.backtrace.first(5).join("\n")
       error_message += "\n\n#{params[:payload]}"
