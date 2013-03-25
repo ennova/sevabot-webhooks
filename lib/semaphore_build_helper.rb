@@ -21,7 +21,7 @@ module SemaphoreBuildHelper
       case result
       when 'passed'
         '(sun)'
-      when 'failing'
+      when 'failed'
         '(rain)'
       end
     end
