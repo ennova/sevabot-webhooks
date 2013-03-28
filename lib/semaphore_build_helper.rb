@@ -10,7 +10,7 @@ module SemaphoreBuildHelper
     # Example:
     # "(sun) PASSED envision/feature/style #1 (10 mins) https://semaphoreapp.com/projects/1234/branches/5678/builds/1"
     def summary_message
-      "#{emoticon} #{result.upcase} #{project_name}/#{branch_name} ##{build_number} (#{duration_in_minutes} mins) #{build_url}"
+      "#{emoticon} #{result.upcase} #{project_name}/#{branch_name} ##{build_number} #{duration_summary}#{build_url}"
     end
 
     def result
@@ -53,7 +53,15 @@ module SemaphoreBuildHelper
     end
 
     def duration_in_minutes
-      ((finished_at - started_at) / 60).round
+      if started_at && finished_at
+        ((finished_at - started_at) / 60).round
+      end
+    end
+
+    def duration_summary
+      if duration_in_minutes
+        "(#{duration_in_minutes} mins) "
+      end
     end
   end
 
