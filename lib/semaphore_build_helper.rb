@@ -47,7 +47,9 @@ module SemaphoreBuildHelper
     end
 
     def finished_at
-      Time.parse(payload['finished_at'])
+      if payload['finished_at']
+        Time.parse(payload['finished_at'])
+      end
     end
 
     def duration_in_minutes
