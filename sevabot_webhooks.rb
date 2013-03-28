@@ -17,7 +17,7 @@ end
 post '/:webhook/:chat_id/:shared_secret' do
   if webhook_adapter
     begin
-      webhook = webhook_adapter.new(params)
+      webhook = webhook_adapter.new(params, request.body.read)
       message = webhook.messages.join("\n")
       unless message.empty?
         HTTParty.post sevabot_url, :body => {:msg => message}

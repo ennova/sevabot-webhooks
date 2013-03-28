@@ -6,7 +6,7 @@ class GithubPush
 
   attr_reader :payload
 
-  def initialize(params)
+  def initialize(params, raw_body)
     @payload = JSON.parse(params['payload'])
   end
 
