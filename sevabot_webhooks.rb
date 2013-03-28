@@ -35,17 +35,6 @@ post '/:webhook/:chat_id/:shared_secret' do
   ""
 end
 
-get '/test/:webhook/:chat_id/:shared_secret' do
-  if webhook_adapter
-    sample_payload = webhook_adapter.sample_payload
-    webhook = webhook_adapter.new(sample_payload)
-    HTTParty.post sevabot_url, :body => {:msg => webhook.messages.join("\n")}
-  else
-    halt "Invalid webhook: #{params[:webhook]}"
-  end
-  ""
-end
-
 helpers do
   def sevabot_url
     "http://#{SEVABOT_HOST}:#{SEVABOT_PORT}/message/#{params[:chat_id]}/#{params[:shared_secret]}/"
