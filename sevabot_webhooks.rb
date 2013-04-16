@@ -17,7 +17,8 @@ end
 post '/:webhook/:chat_id/:shared_secret' do
   if webhook_adapter
     begin
-      webhook = webhook_adapter.new(params, request.body.read)
+      body = request.body.read
+      webhook = webhook_adapter.new(params, body)
       message = webhook.messages.join("\n")
       unless message.empty?
         HTTParty.post sevabot_url, :body => {:msg => message}
@@ -27,6 +28,7 @@ post '/:webhook/:chat_id/:shared_secret' do
       error_message += e.message + "\n"
       error_message += e.backtrace.first(5).join("\n")
       error_message += "\n\n#{params}"
+      error_message += "\n\n#{body}"
       HTTParty.post sevabot_url, :body => {:msg => error_message}
     end
   else
